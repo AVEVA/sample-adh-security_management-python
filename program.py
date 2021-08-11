@@ -16,6 +16,7 @@ def suppress_error(sds_call):
 
 def main(test=False):
     """This function is the main body of the security sample script"""
+    exception = None
     try:
         print('Sample starting...')
 
@@ -124,6 +125,9 @@ def main(test=False):
         suppress_error(lambda: client.Types.deleteType(namespace_id, example_type.Id))
         suppress_error(lambda: client.Roles.deleteRole(custom_role.Id))
         suppress_error(lambda: client.Users.deleteUser(user.Id))
+
+        if test and exception is not None:
+            raise exception
 
     print('Complete!')
 
