@@ -2,8 +2,8 @@ import configparser
 import jsonpatch
 import traceback
 
-from ocs_sample_library_preview import (OCSClient, AccessRights, Role, RoleScope, Trustee, TrusteeType, User, UserInvitation, AccessControlList,
-                                        AccessControlEntry, AccessType, CommonAccessRightsEnum, SdsType, SdsTypeProperty, SdsTypeCode, SdsStream, OwnerType)
+from ocs_sample_library_preview import (OCSClient, Role, RoleScope, Trustee, TrusteeType, User, UserInvitation, AccessControlList,
+                                        AccessControlEntry, AccessType, CommonAccessRightsEnum, SdsType, SdsTypeProperty, SdsTypeCode, SdsStream)
 
 
 def suppress_error(sds_call):
@@ -102,14 +102,14 @@ def main(test=False):
         print('Changing owner of example stream')
         stream_owner = client.Streams.getOwner(namespace_id, example_stream.Id)
         stream_owner.ObjectId = user.Id
-        stream_owner.Type = OwnerType.User
+        stream_owner.Type = TrusteeType.User
         client.Streams.updateOwner(namespace_id, example_stream.Id, stream_owner)
 
         # Step 8
         print('Retrieving the access rights of the example stream')
-        access_rights = AccessRights()
         access_rights = client.Streams.getAccessRights(namespace_id, example_stream.Id)
-        print(access_rights.toJson())
+        for access_right in access_rights:
+            print(access_right.name)
 
     except Exception as error:
         print((f'Encountered Error: {error}'))
@@ -125,9 +125,6 @@ def main(test=False):
         suppress_error(lambda: client.Types.deleteType(namespace_id, example_type.Id))
         suppress_error(lambda: client.Roles.deleteRole(custom_role.Id))
         suppress_error(lambda: client.Users.deleteUser(user.Id))
-
-        if test and exception is not None:
-            raise exception
 
     print('Complete!')
 
