@@ -31,7 +31,7 @@ variables:
   - name: CredFileLibraryOCS
     value: product-readiness.ocs_security.ini
   - name: analysisProject
-    value: SDS_Python
+    value: OCS_Security_Python
 
 jobs:
   - job: Tests
