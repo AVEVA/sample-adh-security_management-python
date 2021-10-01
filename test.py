@@ -10,7 +10,7 @@ class OCSSecuritySampleTests(unittest.TestCase):
     @classmethod
     def test_main(cls):
         """Tests the OCS Security Python main sample script"""
-        main(True)
+        main()
 
 
 if __name__ == '__main__':

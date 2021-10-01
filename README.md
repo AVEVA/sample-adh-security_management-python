@@ -24,7 +24,9 @@ This sample uses the sample python library, which makes REST API calls to OCS, t
 1. Add the 'Tenant Member' role to the created stream's access control list (ACL) using a PATCH REST call
 1. Change the owner of the created stream
 1. Retrieve the access rights of the example stream
+1. Verify the results of the above steps
 1. Cleanup the created stream, type, role, and user
+
 ## Configuring the sample
 
 The sample is configured by modifying the file [config.placeholder.ini](config.placeholder.ini). Details on how to configure it can be found in the sections below. Before editing config.placeholder.ini, rename this file to `config.ini`. This repository's `.gitignore` rules should prevent the file from ever being checked in to any fork or branch, to ensure credentials are not compromised.

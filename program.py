@@ -14,14 +14,36 @@ def suppress_error(sds_call):
         print(f'Encountered Error: {error}')
 
 
-def get_tenant_memeber_role_id(client: OCSClient):
+def get_tenant_member_role_id(client: OCSClient):
     """Helper function that retrieves the first role with the Tenant Member role type Id"""
     roles = client.Roles.getRoles()
     for role in roles:
         if role.RoleTypeId == client.Roles.TenantMemberRoleTypeId:
             return role.Id
 
-def main(test: bool = False):
+
+def compare_acls(acl1: AccessControlList, acl2: AccessControlList):
+    """Helper function for comparing two access control lists"""
+    if not (len(acl1.RoleTrusteeAccessControlEntries) == len(acl2.RoleTrusteeAccessControlEntries)):
+        return False
+
+    for ace1 in acl1.RoleTrusteeAccessControlEntries:
+        ace_match = False
+        for ace2 in acl2.RoleTrusteeAccessControlEntries:
+            if ace1.AccessType == ace2.AccessType and \
+                    ace1.Trustee.ObjectId == ace2.Trustee.ObjectId and \
+                    ace1.Trustee.TenantId == ace2.Trustee.TenantId and \
+                    ace1.Trustee.Type == ace2.Trustee.Type and \
+                    ace1.AccessRights == ace2.AccessRights:
+                ace_match = True
+                break
+        if not ace_match:
+            return False
+
+    return True
+
+
+def main():
     """This function is the main body of the security sample script"""
     exception = None
     try:
@@ -34,11 +56,11 @@ def main(test: bool = False):
         tenant_id = config.get('Access', 'TenantId')
         namespace_id = config.get('Configurations', 'NamespaceId')
 
-        client = OCSClient(config.get('SourceConfiguration', 'ApiVersion'),
+        client = OCSClient(config.get('Access', 'ApiVersion'),
                            config.get('Access', 'TenantId'),
                            config.get('Access', 'Resource'),
-                           config.get('Access', 'ClientId'),
-                           config.get('SourceConfiguration', 'ClientSecret'))
+                           config.get('Credentials', 'ClientId'),
+                           config.get('Credentials', 'ClientSecret'))
 
         # Step 1
         print('Creating a role')
@@ -51,7 +73,7 @@ def main(test: bool = False):
         user = User(contact_given_name='Big', contact_surname='Tex', contact_email='collin.bardini@aveva.com',
                     identity_provider_id=client.Users.MicrosoftIdentityProviderId, role_ids=[custom_role.Id])
 
-        user.RoleIds.append(get_tenant_memeber_role_id(client))
+        user.RoleIds.append(get_tenant_member_role_id(client))
         user = client.Users.createUser(user)
         invitation = UserInvitation(send_invitation=True)
         client.Users.createOrUpdateInvitation(user.Id, invitation)
@@ -75,10 +97,16 @@ def main(test: bool = False):
 
         # Step 5
         print(
-            'Adding custom role to example stream and type access control lists using PUT')
+            'Adding custom role to example type and stream access control lists using PUT')
         trustee = Trustee(TrusteeType.Role, tenant_id, custom_role.Id)
         entry = AccessControlEntry(trustee, AccessType.Allowed,
                                    CommonAccessRightsEnum.Read | CommonAccessRightsEnum.Write)
+
+        type_acl = client.Types.getAccessControl(
+            namespace_id, example_type.Id)
+        type_acl.RoleTrusteeAccessControlEntries.append(entry)
+        client.Types.updateAccessControl(
+            namespace_id, example_type.Id, type_acl)
 
         stream_acl = client.Streams.getAccessControl(
             namespace_id, example_stream.Id)
@@ -86,20 +114,15 @@ def main(test: bool = False):
         client.Streams.updateAccessControl(
             namespace_id, example_stream.Id, stream_acl)
 
-        type_acl = client.Types.getAccessControl(
-            namespace_id, example_type.Id)
-        type_acl.RoleTrusteeAccessControlEntries.append(entry)
-        client.Types.updateAccessControl(
-            namespace_id, example_stream.Id, type_acl)
-
         # Step 6
         print('Adding a role from the example stream access control list using PATCH')
         patch = jsonpatch.JsonPatch(
             [{
                 'op': 'add', 'path': '/RoleTrusteeAccessControlEntries/-',
                 'value': {
-                    'AccessRights': 1, 'AccessType': 0,
-                    'Trustee': {'ObjectId': get_tenant_memeber_role_id(client), 'TenantId': tenant_id, 'Type': 'Role'}
+                    'AccessRights': 0,
+                    'AccessType': 'Allowed',
+                    'Trustee': {'ObjectId': get_tenant_member_role_id(client), 'TenantId': tenant_id, 'Type': 'Role'}
                 }
             }])
         client.Streams.patchAccessControl(
@@ -119,6 +142,15 @@ def main(test: bool = False):
             namespace_id, example_stream.Id)
         for access_right in access_rights:
             print(access_right.name)
+        
+        # Step 9
+        print('Verifying the results of the previous steps')
+        trustee = Trustee(TrusteeType.Role, tenant_id, get_tenant_member_role_id(client))
+        entry = AccessControlEntry(trustee, AccessType.Allowed, CommonAccessRightsEnum.none)
+        stream_acl.RoleTrusteeAccessControlEntries.append(entry)
+        assert compare_acls(client.Types.getAccessControl(namespace_id, example_type.Id), type_acl)
+        assert compare_acls(client.Streams.getAccessControl(namespace_id, example_stream.Id), stream_acl)
+        assert client.Streams.getOwner(namespace_id, example_stream.Id).ObjectId == stream_owner.ObjectId
 
     except Exception as error:
         print((f'Encountered Error: {error}'))
@@ -128,12 +160,10 @@ def main(test: bool = False):
         exception = error
 
     finally:
-        # Step 9
+        # Step 10
         print('Cleaning Up')
-        suppress_error(lambda: client.Streams.deleteStream(
-            namespace_id, example_stream.Id))
-        suppress_error(lambda: client.Types.deleteType(
-            namespace_id, example_type.Id))
+        suppress_error(lambda: client.Streams.deleteStream(namespace_id, example_stream.Id))
+        suppress_error(lambda: client.Types.deleteType(namespace_id, example_type.Id))
         suppress_error(lambda: client.Roles.deleteRole(custom_role.Id))
         suppress_error(lambda: client.Users.deleteUser(user.Id))
 
