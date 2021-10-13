@@ -63,7 +63,7 @@ def compare_acls(acl1: AccessControlList, acl2: AccessControlList):
 
 def main():
     """This function is the main body of the security sample script"""
-    exception = None
+
     try:
         print('Sample starting...')
 
@@ -90,7 +90,7 @@ def main():
 
         # Step 2
         print('Creating a user and invite them')
-        user = User(contact_given_name='Big', contact_surname='Tex', contact_email='collin.bardini@aveva.com',
+        user = User(contact_given_name=contact_given_name, contact_surname=contact_surname, contact_email=contact_email,
                     identity_provider_id=client.Users.MicrosoftIdentityProviderId, role_ids=[custom_role.Id])
 
         user.RoleIds.append(get_tenant_member_role_id(client))
@@ -177,7 +177,6 @@ def main():
         print()
         traceback.print_exc()
         print()
-        exception = error
 
     finally:
         # Step 10
