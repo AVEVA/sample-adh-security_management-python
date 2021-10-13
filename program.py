@@ -1,10 +1,28 @@
-import configparser
+import json
 import jsonpatch
 import traceback
 
 from ocs_sample_library_preview import (OCSClient, Role, RoleScope, Trustee, TrusteeType, User, UserInvitation, AccessControlList,
                                         AccessControlEntry, AccessType, CommonAccessRightsEnum, SdsType, SdsTypeProperty, SdsTypeCode, SdsStream)
 
+custom_role_name = 'custom role - security management sample'
+
+def get_appsettings():
+    """Open and parse the appsettings.json file"""
+
+    # Try to open the configuration file
+    try:
+        with open(
+            'appsettings.json',
+            'r',
+        ) as f:
+            appsettings = json.load(f)
+    except Exception as error:
+        print(f'Error: {str(error)}')
+        print(f'Could not open/read appsettings.json')
+        exit()
+
+    return appsettings
 
 def suppress_error(sds_call):
     """Suppress an error thrown by SDS"""
@@ -49,18 +67,20 @@ def main():
     try:
         print('Sample starting...')
 
-        # Read config and create a client
-        config = configparser.ConfigParser()
-        config.read('config.ini')
+        # Read appsettings and create a client
+        appsettings = get_appsettings()
 
-        tenant_id = config.get('Access', 'TenantId')
-        namespace_id = config.get('Configurations', 'NamespaceId')
+        tenant_id = appsettings.get('TenantId')
+        namespace_id = appsettings.get('NamespaceId')
+        contact_given_name = appsettings.get('ContactGivenName')
+        contact_surname = appsettings.get('ContactSurname')
+        contact_email = appsettings.get('ContactEmail')
 
-        client = OCSClient(config.get('Access', 'ApiVersion'),
-                           config.get('Access', 'TenantId'),
-                           config.get('Access', 'Resource'),
-                           config.get('Credentials', 'ClientId'),
-                           config.get('Credentials', 'ClientSecret'))
+        client = OCSClient(appsettings.get('Access', 'ApiVersion'),
+                           appsettings.get('Access', 'TenantId'),
+                           appsettings.get('Access', 'Resource'),
+                           appsettings.get('Credentials', 'ClientId'),
+                           appsettings.get('Credentials', 'ClientSecret'))
 
         # Step 1
         print('Creating a role')

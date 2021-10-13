@@ -26,10 +26,6 @@ resources:
 
 variables:
   - template: '/miscellaneous/build_templates/variables.yml@templates'
-  - name: CredFile
-    value: config.ini
-  - name: CredFileLibraryOCS
-    value: product-readiness.ocs_security.ini
   - name: analysisProject
     value: OCS_Security_Python
 
@@ -38,11 +34,17 @@ jobs:
     pool:
       name: 00-OSIManaged-Containers
       demands: Agent.OS -equals Linux
+    variables:
+      - name: ContactGivenName
+        value: Big
+      - name: ContactSurname
+        value: Tex
+      - name: ContactEmail
+        value: $(AuthorizationUsername)
     steps:
-      - template: '/miscellaneous/build_templates/config.yml@templates'
+      - template: '/miscellaneous/build_templates/appsettings.yml@templates'
         parameters:
-          fileOriginal: $(CredFile)
-          fileLibrary: $(CredFileLibraryOCS)
+          secrets: 'TenantId, NamespaceId, CommunityId, ClientId, ClientSecret, AuthorizationUsername'
 
       - script: |
           echo Install test tools   
