@@ -63,6 +63,7 @@ def compare_acls(acl1: AccessControlList, acl2: AccessControlList):
 
 def main():
     """This function is the main body of the security sample script"""
+    global custom_role_name
 
     try:
         print('Sample starting...')
@@ -84,7 +85,7 @@ def main():
 
         # Step 1
         print('Creating a role')
-        custom_role = Role(name='custom role - security management sample',
+        custom_role = Role(name=custom_role_name,
                            role_scope=RoleScope.Tenant, tenant_id=tenant_id)
         custom_role = client.Roles.createRole(custom_role)
 
