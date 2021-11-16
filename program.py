@@ -108,6 +108,7 @@ def main(test = False):
         
         # The access control list (ACL) of the Streams collection is modified in this step
         # The collection ACL is used as a default for all new items in a collection, so any new stream created will have this ACL
+        # In addition, it governs who has access to a collection and who can make new collection items (such as new streams)
         streams_acl = client.Streams.get  DefaultAccessControl(namespace_id)
         streams_acl.RoleTrusteeAccessControlEntries.append(entry)
         client.Streams.updateDefaultAccessControl(namespace_id, streams_acl)
