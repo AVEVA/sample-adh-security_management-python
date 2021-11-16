@@ -105,8 +105,10 @@ def main(test = False):
         stream_acl.RoleTrusteeAccessControlEntries.append(entry)
         client.Streams.updateAccessControl(
             namespace_id, example_stream.Id, stream_acl)
-
-        streams_acl = client.Streams.getDefaultAccessControl(namespace_id)
+        
+        # The access control list (ACL) of the Streams collection is modified in this step
+        # The collection ACL is used as a default for all new items in a collection, so any new stream created will have this ACL
+        streams_acl = client.Streams.get  DefaultAccessControl(namespace_id)
         streams_acl.RoleTrusteeAccessControlEntries.append(entry)
         client.Streams.updateDefaultAccessControl(namespace_id, streams_acl)
 
