@@ -28,7 +28,7 @@ class OCSSecuritySampleTests(unittest.TestCase):
                            appsettings.get('ClientId'),
                            appsettings.get('ClientSecret'))
 
-            # Step 9
+            # Step 9 - Verify the results of the previous steps
             print('Verifying the results of the previous steps')
             trustee = Trustee(TrusteeType.Role, tenant_id, get_tenant_member_role_id(client))
             entry = AccessControlEntry(trustee, AccessType.Allowed, CommonAccessRightsEnum.none)
@@ -44,7 +44,7 @@ class OCSSecuritySampleTests(unittest.TestCase):
             success =  False
 
         finally:
-            # Step 10
+            # Step 10 - Clean up
             print('Cleaning Up')
             suppress_error(lambda: client.Streams.deleteStream(namespace_id, 'example_stream-security_management_sample'))
             suppress_error(lambda: client.Types.deleteType(namespace_id, 'example_type-security_management_sample'))
