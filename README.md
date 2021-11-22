@@ -9,7 +9,8 @@ Developed against Python 3.9.1.
 ## Requirements
 
 - Python 3.9+
-- Register a [Client-Credentials Client](https://cloud.osisoft.com/clients) in your OSIsoft Cloud Services tenant and create a client secret to use in the configuration of this sample. ([Video Walkthrough](https://www.youtube.com/watch?v=JPWy0ZX9niU))
+- Register a [Client-Credentials Client](https://cloud.osisoft.com/clients) in your OSIsoft Cloud Services tenant and create a client secret to use in the configuration of this sample. ([Video Walkthrough](https://www.youtube.com/watch?v=JPWy0ZX9niU)). Please note that a client is a different authentication method from using your user account to login.
+- The client that is registered must have "Manage Permissions" access on all collections and collection items that you intend to set security for. Generally, the Tenant Administrator role will have manage access unless a custom configuration has been set.
 - Install required modules: `pip install -r requirements.txt`
 
 ## About this sample
@@ -20,12 +21,12 @@ This sample uses the sample python library, which makes REST API calls to OCS, t
 1. Create a user and invite them to the Tenant
 1. Create a Type
 1. Create a Stream
-1. Add the created role to the created stream's access control list (ACL) using a PUT REST call
+1. Add the custom role to the example type, example stream, and streams collection access control lists using PUT
 1. Add the 'Tenant Member' role to the created stream's access control list (ACL) using a PATCH REST call
 1. Change the owner of the created stream
 1. Retrieve the access rights of the example stream
-1. Verify the results of the above steps
-1. Cleanup the created stream, type, role, and user
+1. (Test only) Verify the results of the above steps
+1. (Test only) Cleanup the created stream, type, role, and user
 
 ## Configuring the sample
 
@@ -66,6 +67,8 @@ To test the sample, run
 pip install pytest
 python -m pytest test.py
 ```
+
+Note: Example Type and Stream names are hardcoded, and will need to be updated if they are changed in program.py
 
 ---
 
