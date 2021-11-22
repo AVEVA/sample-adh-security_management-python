@@ -134,7 +134,7 @@ def main(test = False):
         client.Streams.updateOwner(
             namespace_id, example_stream.Id, stream_owner)
 
-        # Step 8 - Retrieve the access rights of the esample stream
+        # Step 8 - Retrieve the access rights of the example stream
         print('Retrieving the access rights of the example stream')
         access_rights = client.Streams.getAccessRights(
             namespace_id, example_stream.Id)
