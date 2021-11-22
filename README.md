@@ -68,6 +68,8 @@ pip install pytest
 python -m pytest test.py
 ```
 
+Note: Example Type and Stream names are hardcoded, and will need to be updated if they are changed in program.py
+
 ---
 
 Tested against Python 3.9.1
