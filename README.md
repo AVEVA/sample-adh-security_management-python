@@ -9,7 +9,8 @@ Developed against Python 3.9.1.
 ## Requirements
 
 - Python 3.9+
-- Register a [Client-Credentials Client](https://cloud.osisoft.com/clients) in your OSIsoft Cloud Services tenant and create a client secret to use in the configuration of this sample. ([Video Walkthrough](https://www.youtube.com/watch?v=JPWy0ZX9niU))
+- Register a [Client-Credentials Client](https://cloud.osisoft.com/clients) in your OSIsoft Cloud Services tenant and create a client secret to use in the configuration of this sample. ([Video Walkthrough](https://www.youtube.com/watch?v=JPWy0ZX9niU)). Please note that a client is different authentication method from using your user account to login.
+- The client that is registered must have "Manage Permissions" access on all collections and collection items that you intend to set security for. Generally, the Tenant Administrator role will have manage access unless a custom configuration has been set.
 - Install required modules: `pip install -r requirements.txt`
 
 ## About this sample
