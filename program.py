@@ -55,13 +55,13 @@ def main(test = False):
                            appsettings.get('ClientId'),
                            appsettings.get('ClientSecret'))
 
-        # Step 1
+        # Step 1 - Create a role
         print('Creating a role')
         custom_role = Role(name=custom_role_name,
                            role_scope=RoleScope.Tenant, tenant_id=tenant_id)
         custom_role = client.Roles.createRole(custom_role)
 
-        # Step 2
+        # Step 2 - Create a user and invite them
         print('Creating a user and invite them')
         user = User(contact_given_name=contact_given_name, contact_surname=contact_surname, contact_email=contact_email,
                     identity_provider_id=client.Users.MicrosoftIdentityProviderId, role_ids=[custom_role.Id])
@@ -71,7 +71,7 @@ def main(test = False):
         invitation = UserInvitation(send_invitation=True)
         client.Users.createOrUpdateInvitation(user.Id, invitation)
 
-        # Step 3
+        # Step 3 - Create a type
         print('Creating a type')
         date_time_type = SdsType('DateTimeType', SdsTypeCode.DateTime)
         int_type = SdsType('IntType', SdsTypeCode.Int32)
@@ -81,14 +81,14 @@ def main(test = False):
             date_time_property, int_property], 'This is a type example.')
         example_type = client.Types.getOrCreateType(namespace_id, example_type)
 
-        # Step 4
+        # Step 4 - Create a stream
         print('Creating a stream')
         example_stream = SdsStream(
             'example_stream-security_management_sample', example_type.Id)
         example_stream = client.Streams.getOrCreateStream(
             namespace_id, example_stream)
 
-        # Step 5
+        # Step 5 - Add a custom role to example type, example stream, and streams collection ACL using PUT
         print('Adding custom role to example type, example stream, and streams collection access control lists using PUT')
         trustee = Trustee(TrusteeType.Role, tenant_id, custom_role.Id)
         entry = AccessControlEntry(trustee, AccessType.Allowed,
@@ -113,7 +113,7 @@ def main(test = False):
         streams_acl.RoleTrusteeAccessControlEntries.append(entry)
         client.Streams.updateDefaultAccessControl(namespace_id, streams_acl)
 
-        # Step 6
+        # Step 6 - Add a role from the example stream ACL using PATCH
         print('Adding a role from the example stream access control list using PATCH')
         patch = jsonpatch.JsonPatch(
             [{
@@ -127,7 +127,7 @@ def main(test = False):
         client.Streams.patchAccessControl(
             namespace_id, example_stream.Id, patch)
 
-        # Step 7
+        # Step 7 - Change owner of example stream
         print('Changing owner of example stream')
         stream_owner = client.Streams.getOwner(namespace_id, example_stream.Id)
         stream_owner.ObjectId = user.Id
@@ -135,7 +135,7 @@ def main(test = False):
         client.Streams.updateOwner(
             namespace_id, example_stream.Id, stream_owner)
 
-        # Step 8
+        # Step 8 - Retrieve the access rights of the esample stream
         print('Retrieving the access rights of the example stream')
         access_rights = client.Streams.getAccessRights(
             namespace_id, example_stream.Id)
