@@ -34,7 +34,6 @@ def get_tenant_member_role_id(client: OCSClient):
 
 
 def main(test = False):
-    """This function is the main body of the security sample script"""
     global custom_role_name
 
     try:
