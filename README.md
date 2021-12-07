@@ -1,6 +1,6 @@
 # OSIsoft Cloud Services Security Management Python Sample
 
-**Version:** 1.0.0
+**Version:** 1.0.1
 
 [![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/OCS/osisoft.sample-ocs-security_management-python?repoName=osisoft%2Fsample-ocs-security_management-python&branchName=main)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=4027&repoName=osisoft%2Fsample-ocs-security_management-python&branchName=main)
 
