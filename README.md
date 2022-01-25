@@ -1,21 +1,24 @@
-# OSIsoft Cloud Services Security Management Python Sample
+# AVEVA Data Hub Security Management Python Sample
 
-**Version:** 1.0.2
+| :loudspeaker: **Notice**: Samples have been updated to reflect that they work on AVEVA Data Hub. The samples also work on AVEVA Data Hub unless otherwise noted. |
+| -----------------------------------------------------------------------------------------------|  
 
-[![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/OCS/osisoft.sample-ocs-security_management-python?repoName=osisoft%2Fsample-ocs-security_management-python&branchName=main)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=4027&repoName=osisoft%2Fsample-ocs-security_management-python&branchName=main)
+**Version:** 1.1.0
+
+[![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/ADH/aveva.sample-adh-security_management-python?branchName=main)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=4027&branchName=main)
 
 Developed against Python 3.9.1.
 
 ## Requirements
 
-- Python 3.9+
-- Register a [Client-Credentials Client](https://cloud.osisoft.com/clients) in your OSIsoft Cloud Services tenant and create a client secret to use in the configuration of this sample. ([Video Walkthrough](https://www.youtube.com/watch?v=JPWy0ZX9niU)). Please note that a client is a different authentication method from using your user account to login.
+- Python 3.7+
+- Register a [Client-Credentials Client](https://datahub.connect.aveva.com/clients) in your AVEVA Data Hub tenant and create a client secret to use in the configuration of this sample. ([Video Walkthrough](https://www.youtube.com/watch?v=JPWy0ZX9niU)). Please note that a client is a different authentication method from using your user account to login.
 - The client that is registered must have "Manage Permissions" access on all collections and collection items that you intend to set security for. Generally, the Tenant Administrator role will have manage access unless a custom configuration has been set.
 - Install required modules: `pip install -r requirements.txt`
 
 ## About this sample
 
-This sample uses the sample python library, which makes REST API calls to OCS, to manage the security of an OCS Namespace and Tenant. The steps are as follows
+This sample uses the sample python library, which makes REST API calls to ADH, to manage the security of an ADH Namespace and Tenant. The steps are as follows
 
 1. Create a custom role
 1. Create a user and invite them to the Tenant
@@ -34,11 +37,11 @@ The sample is configured by modifying the file [appsettings.placeholder.json](ap
 
 ### Configuring appsettings.json
 
-OSIsoft Cloud Services is secured by obtaining tokens from its identity endpoint. Client credentials clients provide a client application identifier and an associated secret (or key) that are authenticated against the token endpoint. You must replace the placeholders in your `appsettings.json` file with the authentication-related values from your tenant and a client-credentials client created in your OCS tenant.
+AVEVA Data Hub is secured by obtaining tokens from its identity endpoint. Client credentials clients provide a client application identifier and an associated secret (or key) that are authenticated against the token endpoint. You must replace the placeholders in your `appsettings.json` file with the authentication-related values from your tenant and a client-credentials client created in your ADH tenant.
 
 ```json
 {
-  "Resource": "https://dat-b.osisoft.com",
+  "Resource": "https://uswe.datahub.connect.aveva.com",
   "ApiVersion": "v1",
   "TenantId": "PLACEHOLDER_REPLACE_WITH_TENANT_ID",
   "NamespaceId": "PLACEHOLDER_REPLACE_WITH_NAMESPACE_ID",
@@ -74,5 +77,5 @@ Note: Example Type and Stream names are hardcoded, and will need to be updated i
 
 Tested against Python 3.9.1
 
-For the main OCS samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OCS)  
-For the main OSIsoft samples page [ReadMe](https://github.com/osisoft/OSI-Samples)
+For the main ADH samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OCS)  
+For the main AVEVA samples page [ReadMe](https://github.com/osisoft/OSI-Samples)

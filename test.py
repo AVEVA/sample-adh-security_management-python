@@ -1,17 +1,17 @@
-"""This script tests the OCS Security Python sample script"""
+"""This script tests the ADH Security Python sample script"""
 
 import unittest
 from program import main, get_appsettings, get_tenant_member_role_id
-from ocs_sample_library_preview import (OCSClient, Trustee, TrusteeType, AccessControlList,
+from ocs_sample_library_preview import (ADHClient, Trustee, TrusteeType, AccessControlList,
                                         AccessControlEntry, AccessType, CommonAccessRightsEnum, )
 
 
-class OCSSecuritySampleTests(unittest.TestCase):
-    """Tests for the OCS Security Python sample"""
+class ADHSecuritySampleTests(unittest.TestCase):
+    """Tests for the ADH Security Python sample"""
 
     @classmethod
     def test_main(cls):
-        """Tests the OCS Security Python main sample script"""
+        """Tests the ADH Security Python main sample script"""
         success = True
         try:
             user, stream_owner, custom_role, stream_acl, streams_acl, type_acl = main(True)
@@ -22,7 +22,7 @@ class OCSSecuritySampleTests(unittest.TestCase):
             tenant_id = appsettings.get('TenantId')
             namespace_id = appsettings.get('NamespaceId')
 
-            client = OCSClient(appsettings.get('ApiVersion'),
+            client = ADHClient(appsettings.get('ApiVersion'),
                            appsettings.get('TenantId'),
                            appsettings.get('Resource'),
                            appsettings.get('ClientId'),

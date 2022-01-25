@@ -2,7 +2,7 @@ import json
 import jsonpatch
 import traceback
 
-from ocs_sample_library_preview import (OCSClient, Role, RoleScope, Trustee, TrusteeType, User, UserInvitation, AccessControlList,
+from ocs_sample_library_preview import (ADHClient, Role, RoleScope, Trustee, TrusteeType, User, UserInvitation, AccessControlList,
                                         AccessControlEntry, AccessType, CommonAccessRightsEnum, SdsType, SdsTypeProperty, SdsTypeCode, SdsStream)
 
 custom_role_name = 'custom role - security management sample'
@@ -25,7 +25,7 @@ def get_appsettings():
     return appsettings
 
 
-def get_tenant_member_role_id(client: OCSClient):
+def get_tenant_member_role_id(client: ADHClient):
     """Helper function that retrieves the first role with the Tenant Member role type Id"""
     roles = client.Roles.getRoles()
     for role in roles:
@@ -48,7 +48,7 @@ def main(test = False):
         contact_surname = appsettings.get('ContactSurname')
         contact_email = appsettings.get('ContactEmail')
 
-        client = OCSClient(appsettings.get('ApiVersion'),
+        client = ADHClient(appsettings.get('ApiVersion'),
                            appsettings.get('TenantId'),
                            appsettings.get('Resource'),
                            appsettings.get('ClientId'),
