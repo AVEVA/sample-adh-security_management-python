@@ -2,7 +2,7 @@
 
 import unittest
 from program import main, get_appsettings, get_tenant_member_role_id
-from ocs_sample_library_preview import (ADHClient, Trustee, TrusteeType, AccessControlList,
+from adh_sample_library_preview import (ADHClient, Trustee, TrusteeType, AccessControlList,
                                         AccessControlEntry, AccessType, CommonAccessRightsEnum, )
 
 

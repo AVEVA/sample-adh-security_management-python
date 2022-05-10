@@ -2,7 +2,7 @@ import json
 import jsonpatch
 import traceback
 
-from ocs_sample_library_preview import (ADHClient, Role, RoleScope, Trustee, TrusteeType, User, UserInvitation, AccessControlList,
+from adh_sample_library_preview import (ADHClient, Role, RoleScope, Trustee, TrusteeType, User, UserInvitation, AccessControlList,
                                         AccessControlEntry, AccessType, CommonAccessRightsEnum, SdsType, SdsTypeProperty, SdsTypeCode, SdsStream)
 
 custom_role_name = 'custom role - security management sample'
