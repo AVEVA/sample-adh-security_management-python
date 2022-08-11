@@ -33,11 +33,19 @@ variables:
   - name: analysisProject
     value: OCS_Security_Python
 
+parameters:
+  - name: pool
+    default: 00-OSIManaged-Containers
+  - name: containerDemands
+    type: object
+    default: ['Agent.OS -equals Linux']
+
 jobs:
   - job: Tests
+    condition: ne(variables['Build.Reason'], 'Schedule')
     pool:
-      name: 00-OSIManaged-Containers
-      demands: Agent.OS -equals Linux
+      name: ${{ parameters.pool }}
+      demands: ${{ parameters.containerDemands }}
     variables:
       - name: ContactGivenName
         value: Big
