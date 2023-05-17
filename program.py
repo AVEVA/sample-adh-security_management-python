@@ -63,7 +63,7 @@ def main(test = False):
         # Step 2 - Create a user and invite them
         print('Creating a user and invite them')
         user = User(contact_given_name=contact_given_name, contact_surname=contact_surname, contact_email=contact_email,
-                    identity_provider_id=client.Users.MicrosoftIdentityProviderId, role_ids=[custom_role.Id])
+                    identity_provider_id='21852a8a-db68-427c-aec5-cea3b26ba9a2', role_ids=[custom_role.Id])
 
         user.RoleIds.append(get_tenant_member_role_id(client))
         user = client.Users.createUser(user)
