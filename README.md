@@ -1,8 +1,5 @@
 # AVEVA Data Hub Security Management Python Sample
 
-| :loudspeaker: **Notice**: Samples have been updated to reflect that they work on AVEVA Data Hub. The samples also work on AVEVA Data Hub unless otherwise noted. |
-| -----------------------------------------------------------------------------------------------|  
-
 **Version:** 1.1.3
 
 [![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/ADH/aveva.sample-adh-security_management-python?branchName=main)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=4027&branchName=main)
