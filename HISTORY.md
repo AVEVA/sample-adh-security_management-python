@@ -20,7 +20,7 @@
 
 ## 1.1.0 / 2022-01-27
 
-- Updated for AVEVA Data Hub
+- Updated for CONNECT data services
 
 ## 1.0.2 / 2022-01-17
 
